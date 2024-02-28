@@ -18,4 +18,8 @@ public class CandidateController {
         return "candidates/list";
     }
 
+    @GetMapping("/create")
+    public String getCreationPage() {
+        return "candidates/create";
+    }
 }
