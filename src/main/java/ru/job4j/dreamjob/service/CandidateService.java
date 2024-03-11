@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface CandidateService {
     Candidate save(Candidate candidate);
 
-    Candidate deleteById(int id);
+    boolean deleteById(int id);
 
     boolean update(Candidate candidate);
 

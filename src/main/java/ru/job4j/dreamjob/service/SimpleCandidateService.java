@@ -14,13 +14,14 @@ public class SimpleCandidateService implements CandidateService {
     public static SimpleCandidateService getInstance() {
         return INSTANCE;
     }
+
     @Override
     public Candidate save(Candidate candidate) {
         return candidateRepository.save(candidate);
     }
 
     @Override
-    public Candidate deleteById(int id) {
+    public boolean deleteById(int id) {
         return candidateRepository.deleteById(id);
     }
 
