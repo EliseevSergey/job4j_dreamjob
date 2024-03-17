@@ -21,7 +21,7 @@ public class MemoryCityRepository implements CityRepository {
         return cities.values();
     }
 
-    public void put(int id, City city) {
+    public void save(int id, City city) {
         cities.put(id, city);
     }
 }
