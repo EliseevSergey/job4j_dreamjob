@@ -1,7 +1,6 @@
 package ru.job4j.dreamjob.model;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Vacancy {
@@ -11,16 +10,19 @@ public class Vacancy {
     private LocalDateTime creationDate = LocalDateTime.now();
     private boolean visible;
     private int cityId;
+    private int fileId;
 
     public Vacancy() {
     }
 
-    public Vacancy(int id, String title, String description, boolean visible, int cityId) {
+    public Vacancy(int id, String title, String description, LocalDateTime creationDate, boolean visible, int cityId, int fileId) {
         this.id = id;
         this.title = title;
         this.description = description;
+        this.creationDate = creationDate;
         this.visible = visible;
-        this.cityId = id;
+        this.cityId = cityId;
+        this.fileId = fileId;
     }
 
     public int getId() {
@@ -54,9 +56,12 @@ public class Vacancy {
         this.description = description;
     }
 
-    public String getCreationDate() {
-        return creationDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    public LocalDateTime getCreationDate() {
+        return creationDate;
     }
+    /*public String getCreationDate() {
+        return creationDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    }*/
 
     public int getCityId() {
         return cityId;
@@ -64,6 +69,14 @@ public class Vacancy {
 
     public void setCityId(int cityId) {
         this.cityId = cityId;
+    }
+
+    public int getFileId() {
+        return fileId;
+    }
+
+    public void setFileId(int fileId) {
+        this.fileId = fileId;
     }
 
     @Override
