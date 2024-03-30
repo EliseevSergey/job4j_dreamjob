@@ -21,9 +21,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class Sql2oVacancyRepositoryTest {
     private static Sql2oVacancyRepository sql2oVacancyRepository;
-
     private static Sql2oFileRepository sql2oFileRepository;
-
     private static File file;
 
     @BeforeAll
@@ -43,7 +41,7 @@ public class Sql2oVacancyRepositoryTest {
         sql2oVacancyRepository = new Sql2oVacancyRepository(sql2o);
         sql2oFileRepository = new Sql2oFileRepository(sql2o);
 
-        file = new File("test", "test");
+        file = new File("test2", "test2");
         sql2oFileRepository.save(file);
     }
 
@@ -104,7 +102,7 @@ public class Sql2oVacancyRepositoryTest {
         var creationDate = now().truncatedTo(ChronoUnit.MINUTES);
         var vacancy = sql2oVacancyRepository.save(new Vacancy(0, "title", "description", creationDate, true, 1, file.getId()));
         var updatedVacancy = new Vacancy(
-                vacancy.getId(), "new title", "new description", creationDate.plusDays(1),
+                vacancy.getId(), "new title", "new description", creationDate,
                 !vacancy.getVisible(), 1, file.getId()
         );
         var isUpdated = sql2oVacancyRepository.update(updatedVacancy);
