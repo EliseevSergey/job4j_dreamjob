@@ -61,7 +61,7 @@ public class Sql2oVacancyRepositoryTest {
     @Test
     public void whenSaveThenGetSame() {
         var creationDate = now().truncatedTo(ChronoUnit.MINUTES);
-        var vacancy = sql2oVacancyRepository.save(new Vacancy(0, "title", "description", creationDate, true, 1, file.getId()));
+        Vacancy vacancy = sql2oVacancyRepository.save(new Vacancy(0, "title", "description", creationDate, true, 1, file.getId()));
         var savedVacancy = sql2oVacancyRepository.findById(vacancy.getId()).get();
         assertThat(savedVacancy).usingRecursiveComparison().isEqualTo(vacancy);
     }

@@ -5,6 +5,8 @@ import org.sql2o.Connection;
 import org.sql2o.Query;
 import org.sql2o.Sql2o;
 import ru.job4j.dreamjob.model.User;
+
+import java.util.Collection;
 import java.util.Optional;
 
 @Repository
@@ -45,5 +47,13 @@ public class Sql2oUserRepository implements UserRepository {
             return Optional.ofNullable(user);
         }
     }
+
+    /*public void truncateUsers() {
+        try (Connection connection = sql2o.open()) {
+            String sql = "TRUNCATE USERS";
+            Query query = connection.createQuery(sql);
+            Collection<User> deleted = query.executeAndFetch(User.class);
+        }
+    }*/
 }
 
