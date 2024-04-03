@@ -2,7 +2,6 @@ package ru.job4j.repository;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.job4j.dreamjob.configuration.DatasourceConfiguration;
 import ru.job4j.dreamjob.model.User;
@@ -13,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class Sql2oUserRepositoryTest {
     private static Sql2oUserRepository sql2oUserRepository;
@@ -64,10 +64,8 @@ public class Sql2oUserRepositoryTest {
     @Test
     public void whenSameEmailThenReject() {
         User user1 = new User(1, "111@gmail.com", "a", "а");
-        User user2 = new User(1, "111@gmail.com", "b", "а");
+        User user2 = new User(2, "111@gmail.com", "b", "b");
         sql2oUserRepository.save(user1);
-        //assertThat(sql2oUserRepository.save(user2)).isInstanceOf(org.sql2o.Sql2oException.class);
-        assertThat(sql2oUserRepository.save(user2)).isInstanceOf(org.sql2o.Sql2oException.class);
+        assertThrows(org.sql2o.Sql2oException.class, () -> sql2oUserRepository.save(user2));
     }
-
 }
