@@ -48,12 +48,12 @@ public class Sql2oUserRepository implements UserRepository {
         }
     }
 
-    /*public void truncateUsers() {
+    public void truncateAllUsers() {
         try (Connection connection = sql2o.open()) {
-            String sql = "TRUNCATE USERS";
+            String sql = "TRUNCATE TABLE users RESTART IDENTITY;";
             Query query = connection.createQuery(sql);
-            Collection<User> deleted = query.executeAndFetch(User.class);
+            query.executeUpdate();
         }
-    }*/
+    }
 }
 
