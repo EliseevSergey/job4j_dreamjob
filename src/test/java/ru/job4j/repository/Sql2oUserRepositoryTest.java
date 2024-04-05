@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class Sql2oUserRepositoryTest {
     private static Sql2oUserRepository sql2oUserRepository;
@@ -66,6 +65,6 @@ public class Sql2oUserRepositoryTest {
         User user1 = new User(1, "111@gmail.com", "a", "а");
         User user2 = new User(2, "111@gmail.com", "b", "b");
         sql2oUserRepository.save(user1);
-        assertThrows(org.sql2o.Sql2oException.class, () -> sql2oUserRepository.save(user2));
+        assertThat(sql2oUserRepository.save(user2)).isEmpty();
     }
 }
