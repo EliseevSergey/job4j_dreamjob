@@ -26,37 +26,19 @@ public class CandidateController {
     }
 
     @GetMapping
-    public String getAll(Model model, HttpSession session) {
-        var user = (User) session.getAttribute("user");
-        if (user == null) {
-            user = new User();
-            user.setName("Гость");
-        }
-        model.addAttribute("user", user);
+    public String getAll(Model model) {
         model.addAttribute("candidates", candidateService.findAll());
         return "candidates/list";
     }
 
     @GetMapping("/create")
-    public String getCreationPage(Model model, HttpSession session) {
-        var user = (User) session.getAttribute("user");
-        if (user == null) {
-            user = new User();
-            user.setName("Гость");
-        }
-        model.addAttribute("user", user);
+    public String getCreationPage(Model model) {
         model.addAttribute("cities", cityService.findAll());
         return "candidates/create";
     }
 
     @PostMapping("/create")
-    public String create(@ModelAttribute Candidate candidate, @RequestParam MultipartFile file, Model model, HttpSession session) {
-        var user = (User) session.getAttribute("user");
-        if (user == null) {
-            user = new User();
-            user.setName("Гость");
-        }
-        model.addAttribute("user", user);
+    public String create(@ModelAttribute Candidate candidate, @RequestParam MultipartFile file, Model model) {
         try {
             candidateService.save(candidate, new FileDto(file.getOriginalFilename(), file.getBytes()));
             return "redirect:/candidates";
@@ -67,13 +49,7 @@ public class CandidateController {
     }
 
     @GetMapping("/{id}")
-    public String getById(Model model, @PathVariable int id, HttpSession session) {
-        var user = (User) session.getAttribute("user");
-        if (user == null) {
-            user = new User();
-            user.setName("Гость");
-        }
-        model.addAttribute("user", user);
+    public String getById(Model model, @PathVariable int id) {
         var vacancyOptional = candidateService.findById(id);
         if (vacancyOptional.isEmpty()) {
             model.addAttribute("message", "Кандидат с указанным идентификатором не найден");
@@ -85,13 +61,7 @@ public class CandidateController {
     }
 
     @PostMapping("/update")
-    public String update(@ModelAttribute Candidate candidate, @RequestParam MultipartFile file, Model model, HttpSession session) {
-        var user = (User) session.getAttribute("user");
-        if (user == null) {
-            user = new User();
-            user.setName("Гость");
-        }
-        model.addAttribute("user", user);
+    public String update(@ModelAttribute Candidate candidate, @RequestParam MultipartFile file, Model model) {
         try {
             var isUpdated = candidateService.update(candidate, new FileDto(file.getOriginalFilename(), file.getBytes()));
             if (!isUpdated) {
@@ -106,13 +76,7 @@ public class CandidateController {
     }
 
     @GetMapping("/delete/{id}")
-    public String delete(Model model, @PathVariable int id, HttpSession session) {
-        var user = (User) session.getAttribute("user");
-        if (user == null) {
-            user = new User();
-            user.setName("Гость");
-        }
-        model.addAttribute("user", user);
+    public String delete(Model model, @PathVariable int id) {
         if (!candidateService.deleteById(id)) {
             model.addAttribute("message", "Кандидат с указанным идентификатором не найден");
             return "errors/404";

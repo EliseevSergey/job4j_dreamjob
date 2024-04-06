@@ -20,13 +20,7 @@ public class UserController {
     }
 
     @GetMapping("/register")
-    public String getRegistrationPage(Model model, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            user = new User();
-            user.setName("Гость");
-        }
-        model.addAttribute("user", user);
+    public String getRegistrationPage() {
         return "users/register";
     }
 
@@ -37,7 +31,7 @@ public class UserController {
             model.addAttribute("message", "Пользователь с такой почтой уже существует");
             return "errors/404";
         }
-        return "redirect:/vacancies";
+        return "redirect:/users/login";
     }
 
     @GetMapping("/login")

@@ -13,6 +13,7 @@ import java.io.IOException;
 @Component
 @Order(1)
 public class AuthorizationFilter extends HttpFilter {
+
     @Override
     protected void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         var uri = request.getRequestURI();
@@ -20,7 +21,7 @@ public class AuthorizationFilter extends HttpFilter {
             chain.doFilter(request, response);
             return;
         }
-        var userLoggedIn = request.getSession().getAttribute("user") != null;
+        boolean userLoggedIn = request.getSession().getAttribute("user") != null;
         if (!userLoggedIn) {
             var loginPageUrl = request.getContextPath() + "/users/login";
             response.sendRedirect(loginPageUrl);
