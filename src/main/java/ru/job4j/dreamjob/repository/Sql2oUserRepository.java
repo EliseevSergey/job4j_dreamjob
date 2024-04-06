@@ -37,8 +37,8 @@ public class Sql2oUserRepository implements UserRepository {
             return Optional.of(user);
         } catch (Exception e) {
             LOGGER.error("Error while save(user) in DB", e);
-            return Optional.empty();
         }
+        return Optional.empty();
     }
 
     @Override
