@@ -14,6 +14,8 @@ import ru.job4j.dreamjob.service.CityService;
 import ru.job4j.dreamjob.service.VacancyService;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
+
 import static java.time.LocalDateTime.now;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -58,13 +60,11 @@ public class VacancyControllerTest {
 
         var model = new ConcurrentModel();
         var view = vacancyController.getCreationPage(model);
-        var actualVacancies = model.getAttribute("cities");
+        var actualCities = model.getAttribute("cities");
 
         assertThat(view).isEqualTo("vacancies/create");
-        assertThat(actualVacancies).isEqualTo(expectedCities);
+        assertThat(actualCities).isEqualTo(expectedCities);
     }
-
-
 
     @Test
     public void whenPostVacancyWithFileThenSameDataAndRedirectToVacanciesPage() throws Exception {
@@ -95,5 +95,18 @@ public class VacancyControllerTest {
 
         assertThat(view).isEqualTo("errors/404");
         assertThat(actualExceptionMessage).isEqualTo(expectedException.getMessage());
+    }
+
+    @Test
+    public void whenGetById() {
+        Vacancy vacancy1 = new Vacancy(1, "test1", "desc1", now(), true, 1, 2);
+        when(vacancyService.findById(1)).thenReturn(Optional.of(vacancy1));
+
+        ConcurrentModel model = new ConcurrentModel();
+        String view = vacancyController.getById(model, 1);
+        Object actualVacancy = model.getAttribute("vacancy");
+
+        assertThat(view).isEqualTo("vacancies/one");
+        assertThat(actualVacancy).isEqualTo(vacancy1);
     }
 }
