@@ -12,6 +12,8 @@ import ru.job4j.dreamjob.model.City;
 import ru.job4j.dreamjob.model.Vacancy;
 import ru.job4j.dreamjob.service.CityService;
 import ru.job4j.dreamjob.service.VacancyService;
+
+import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -69,7 +71,7 @@ public class VacancyControllerTest {
     @Test
     public void whenPostVacancyWithFileThenSameDataAndRedirectToVacanciesPage() throws Exception {
         var vacancy = new Vacancy(1, "test1", "desc1", now(), true, 1, 2);
-        var fileDto = new FileDto(testFile.getOriginalFilename(), testFile.getBytes());
+        FileDto fileDto = new FileDto(testFile.getOriginalFilename(), testFile.getBytes());
         ArgumentCaptor<Vacancy> vacancyArgumentCaptor = ArgumentCaptor.forClass(Vacancy.class);
         ArgumentCaptor<FileDto> fileDtoArgumentCaptor = ArgumentCaptor.forClass(FileDto.class);
         when(vacancyService.save(vacancyArgumentCaptor.capture(), fileDtoArgumentCaptor.capture())).thenReturn(vacancy);
@@ -91,7 +93,7 @@ public class VacancyControllerTest {
 
         var model = new ConcurrentModel();
         var view = vacancyController.create(new Vacancy(), testFile, model);
-        var actualExceptionMessage = model.getAttribute("message");
+        Object actualExceptionMessage = model.getAttribute("message");
 
         assertThat(view).isEqualTo("errors/404");
         assertThat(actualExceptionMessage).isEqualTo(expectedException.getMessage());
@@ -108,5 +110,28 @@ public class VacancyControllerTest {
 
         assertThat(view).isEqualTo("vacancies/one");
         assertThat(actualVacancy).isEqualTo(vacancy1);
+    }
+
+    @Test
+    public void whenDeleteThenRedirectToVacancies() throws IOException {
+        when(vacancyService.deleteById(1)).thenReturn(true);
+
+        ConcurrentModel model = new ConcurrentModel();
+
+        String view = vacancyController.delete(model, 1);
+        assertThat(view).isEqualTo("redirect:/vacancies");
+    }
+
+    @Test
+    public void whenDeleteAbsentThenThrow() {
+        var expectedException = new RuntimeException("Вакансия с указанным идентификатором не найдена");
+        ConcurrentModel model = new ConcurrentModel();
+
+
+        String view = vacancyController.delete(model, 1);
+        var actualExceptionMessage = model.getAttribute("message");
+        assertThat(view).isEqualTo("errors/404");
+
+        assertThat(actualExceptionMessage).isEqualTo(expectedException.getMessage());
     }
 }
